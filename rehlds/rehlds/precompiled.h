@@ -5,7 +5,6 @@
 #include "osconfig.h"
 
 #include "archtypes.h"
-#include "asmlib.h"
 #include "sse_mathfun.h"
 #include "mathlib.h"
 

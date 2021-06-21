@@ -30,7 +30,7 @@ misrepresented as being the original software.
 */
 #pragma once
 
-#include <xmmintrin.h>
+#include "sse2neon.h"
 
 /* yes I know, the top of this file is quite ugly */
 
@@ -45,7 +45,7 @@ misrepresented as being the original software.
 /* __m128 is ugly to write */
 typedef __m128 v4sf;  // vector of 4 float (sse1)
 
-#include <emmintrin.h>
+#include "sse2neon.h"
 typedef __m128i v4si; // vector of 4 int (sse2)
 
 

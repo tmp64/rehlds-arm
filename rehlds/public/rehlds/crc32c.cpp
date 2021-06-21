@@ -14,7 +14,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #include "crc32c.h"
 #include "sys_shared.h"
-#include "immintrin.h"
+#include "sse2neon.h"
 
 /*****************************************************************/
 /*                                                               */
@@ -116,12 +116,10 @@ uint32 crc32c_t_nosse(uint32 iCRC, const uint8 *buf, int len) {
 }
 
 #ifdef REHLDS_SSE
-FUNC_TARGET("sse4.2")
 uint32 crc32c_t8_sse(uint32 iCRC, uint8 u8) {
 	return _mm_crc32_u8(iCRC, u8);
 }
 
-FUNC_TARGET("sse4.2")
 uint32 crc32c_t_sse(uint32 iCRC, const uint8 *buf, unsigned int len) {
 	uint32 crc32cval = iCRC;
 	unsigned int i = 0;

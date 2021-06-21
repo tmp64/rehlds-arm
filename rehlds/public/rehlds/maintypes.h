@@ -52,7 +52,8 @@
 // For EBP based stack (older gcc) (uncomment version apropriate for your compiler)
 //#define NOXREFCHECK			int __retAddr; __asm__ __volatile__("movl 4(%%ebp), %%eax;" "movl %%eax, %0":"=r"(__retAddr)::"%eax"); Sys_Error("[NOXREFCHECK]: %s: (" __FILE__ ":" __LINE__AS_STRING ") NOXREF, but called from 0x%.08x", __func__, __retAddr);
 // For ESP based stack (newer gcc) (uncomment version apropriate for your compiler)
-#define NOXREFCHECK			int __retAddr; __asm__ __volatile__("movl 16(%%esp), %%eax;" "movl %%eax, %0":"=r"(__retAddr)::"%eax"); Sys_Error("[NOXREFCHECK]: %s: (" __FILE__ ":" __LINE__AS_STRING ") NOXREF, but called from 0x%.08x", __func__, __retAddr);
+//#define NOXREFCHECK			int __retAddr; __asm__ __volatile__("movl 16(%%esp), %%eax;" "movl %%eax, %0":"=r"(__retAddr)::"%eax"); Sys_Error("[NOXREFCHECK]: %s: (" __FILE__ ":" __LINE__AS_STRING ") NOXREF, but called from 0x%.08x", __func__, __retAddr);
+#define NOXREFCHECK
 #endif
 
 #define BIT(n) (1<<(n))

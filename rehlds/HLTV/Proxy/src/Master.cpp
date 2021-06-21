@@ -104,7 +104,6 @@ void Master::RunFrame(double time)
 	static double s_flLastRunCallbacks = 0.0f;
 	if ((time - s_flLastRunCallbacks) > 0.1)
 	{
-		SteamGameServer_RunCallbacks();
 		s_flLastRunCallbacks = time;
 	}
 
@@ -132,25 +131,8 @@ void Master::RunFrame(double time)
 				INetwork *network = m_MasterSocket->GetNetwork();
 				NetAddress *netAdr = network->GetLocalAddress();
 
-				if (SteamGameServer_Init(ntohl(*(u_long *)&netAdr->m_IP[0]), 0, 0, 0xFFFFu, eServerModeNoAuthentication, MASTER_VERSION))
-				{
-					SteamGameServer()->SetProduct("hltv");
-					SteamGameServer()->SetGameDescription("hltv");
-					SteamGameServer()->SetModDir(world->GetGameDir());
-					SteamGameServer()->SetDedicatedServer(true);
-					SteamGameServer()->SetSpectatorPort(htons(netAdr->m_Port));
-					SteamGameServer()->LogOnAnonymous();
 
-					SteamGameServer()->EnableHeartbeats(true);
-				}
-				else
-				{
-					// NOTE: Actually here call via Printf, but we will be use DPrintf to avoid useless print into console
-					// or at least make only print once.
-					m_System->DPrintf("Master module failed to initialize. (init failed)\n");
-				}
-
-				m_bSteamInitialized = SteamGameServer() ? true : false;
+				m_bSteamInitialized = false;
 			}
 		}
 
@@ -168,12 +150,6 @@ void Master::RunFrame(double time)
 				int slots, proxies, spectators;
 				m_Proxy->GetStatistics(proxies, slots, spectators);
 
-				SteamGameServer()->SetMaxPlayerCount(Q_min(slots, 127));	// max slots
-				SteamGameServer()->SetServerName(szHostName);
-				SteamGameServer()->SetMapName(mapName);
-				SteamGameServer()->SetPasswordProtected(m_Proxy->IsPasswordProtected());
-				SteamGameServer()->SetModDir(world->GetGameDir());
-
 				m_flMasterUpdateTime = m_System->GetTime() + 5.0f;
 			}
 		}
@@ -184,18 +160,6 @@ void Master::RunFrame(double time)
 		uint32 ip;
 		uint16 port;
 		char szOutBuf[4096];
-
-		int iLen = SteamGameServer()->GetNextOutgoingPacket(szOutBuf, sizeof(szOutBuf), &ip, &port);
-		while (iLen > 0)
-		{
-			NetAddress netAdr;
-			*((uint32 *)&netAdr.m_IP[0]) = htonl(ip);
-			netAdr.m_Port = htons(port);
-
-			m_MasterSocket->SendPacket(&netAdr, szOutBuf, iLen);
-
-			iLen = SteamGameServer()->GetNextOutgoingPacket(szOutBuf, sizeof(szOutBuf), &ip, &port);
-		}
 	}
 }
 
@@ -205,12 +169,7 @@ void Master::ShutDown()
 		return;
 	}
 
-	if (SteamGameServer()) {
-		SteamGameServer()->LogOff();
-	}
-
 	BaseSystemModule::ShutDown();
-	SteamGameServer_Shutdown();
 	m_System->Printf("Master module shutdown.\n");
 }
 
@@ -219,15 +178,11 @@ void Master::CMD_Heartbeat(char *cmdLine)
 	if (m_State == MODULE_DISCONNECTED) {
 		return;
 	}
-
-	if (SteamGameServer()) {
-		SteamGameServer()->ForceHeartbeat();
-	}
 }
 
 void Master::CMD_NoMaster(char *cmdLine)
 {
-	if (m_State == MODULE_DISCONNECTED || !SteamGameServer()) {
+	if (m_State == MODULE_DISCONNECTED) {
 		return;
 	}
 
@@ -241,10 +196,6 @@ void Master::CMD_NoMaster(char *cmdLine)
 
 	bool bOldMasterState = m_NoMaster;
 	m_NoMaster = Q_atoi(params.GetToken(1)) ? true : false;
-
-	if (bOldMasterState != m_NoMaster) {
-		SteamGameServer()->EnableHeartbeats(m_NoMaster);
-	}
 }
 
 void Master::CMD_ListMaster(char *pchCmdLine)
@@ -284,10 +235,6 @@ void Master::SendShutdown()
 {
 	if (m_State == MODULE_DISCONNECTED) {
 		return;
-	}
-
-	if (SteamGameServer()) {
-		SteamGameServer()->EnableHeartbeats(false);
 	}
 }
 

@@ -26,8 +26,6 @@
 #include "common/DemoFile.h"
 #include "common/munge.h"
 
-#include <steam/steam_gameserver.h>
-
 #include <HLTV/IWorld.h>
 #include <HLTV/IProxy.h>
 #include <HLTV/IServer.h>

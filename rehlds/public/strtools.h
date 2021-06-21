@@ -64,27 +64,27 @@ inline char *_strlwr(char *start)
 }
 #endif
 
-#if defined(ASMLIB_H) && defined(HAVE_OPT_STRTOOLS)
-	#define Q_memset A_memset
-	#define Q_memcpy A_memcpy
-	#define Q_memcmp A_memcmp
-	#define Q_memmove A_memmove
-	#define Q_strlen A_strlen
-	#define Q_strcpy A_strcpy
+#if defined(HAVE_OPT_STRTOOLS)
+	#define Q_memset memset
+	#define Q_memcpy memcpy
+	#define Q_memcmp memcmp
+	#define Q_memmove memmove
+	#define Q_strlen strlen
+	#define Q_strcpy strcpy
 	#define Q_strncpy strncpy
-	#define Q_strcat A_strcat
+	#define Q_strcat strcat
 	#define Q_strncat strncat
-	#define Q_strcmp A_strcmp
+	#define Q_strcmp strcmp
 	#define Q_strncmp strncmp
 	#define Q_strdup _strdup
-	#define Q_stricmp A_stricmp
+	#define Q_stricmp _stricmp
 	#define Q_strnicmp _strnicmp
-	#define Q_strstr A_strstr
+	#define Q_strstr strstr
 	#define Q_strchr strchr
 	#define Q_strrchr strrchr
 	#define Q_strtok strtok
-	#define Q_strlwr A_strtolower
-	#define Q_strupr A_strtoupper
+	#define Q_strlwr _strlwr
+	#define Q_strupr _strupr
 	#define Q_sprintf sprintf
 	#define Q_snprintf _snprintf
 	#define Q_vsnprintf _vsnprintf
@@ -146,7 +146,7 @@ inline char *_strlwr(char *start)
 	#define Q_sin sin
 	#define Q_pow pow
 	#define Q_fmod fmod
-#endif // #if defined(ASMLIB_H) && defined(HAVE_OPT_STRTOOLS)
+#endif // #if defined(HAVE_OPT_STRTOOLS)
 
 // size - sizeof(buffer)
 inline char *Q_strlcpy(char *dest, const char *src, size_t size) {

@@ -1,0 +1,3 @@
+[submodule "dep/sse2neon"]
+	path = dep/sse2neon
+	url = ../../DLTcollab/sse2neon

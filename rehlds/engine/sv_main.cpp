@@ -1824,7 +1824,7 @@ void SV_ChallengesInit()
 #ifdef REHLDS_FIXES
 	static_assert(sizeof(g_raw_challenge_buf) == 64u, "Invalid g_raw_challenge_buf size");
 	for (uint32_t& s : g_raw_challenge_buf.salt)
-		s = __rdtsc() * rand();
+	    __asm volatile("mrs %0, cntvct_el0" : "=r" (s));
 #endif
 }
 

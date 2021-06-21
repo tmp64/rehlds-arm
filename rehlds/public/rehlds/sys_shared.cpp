@@ -28,7 +28,6 @@
 #include "sys_shared.h"
 
 #if defined(__GNUC__)
-#include <cpuid.h>
 #elif _MSC_VER >= 1400 && !defined(ASMLIB_H)
 #include <intrin.h>	// __cpuidex
 #endif
@@ -47,28 +46,11 @@ void Sys_CheckCpuInstructionsSupport(void)
 {
 	unsigned int cpuid_data[4];
 
-#if defined ASMLIB_H
-	cpuid_ex((int *)cpuid_data, 1, 0);
-#elif defined(__GNUC__)
-	__get_cpuid(0x1, &cpuid_data[0], &cpuid_data[1], &cpuid_data[2], &cpuid_data[3]);
-#else
-	__cpuidex((int *)cpuid_data, 1, 0);
-#endif
-
 	cpuinfo.sse3 = (cpuid_data[2] & SSE3_FLAG) ? 1 : 0; // ecx
 	cpuinfo.ssse3 = (cpuid_data[2] & SSSE3_FLAG) ? 1 : 0;
 	cpuinfo.sse4_1 = (cpuid_data[2] & SSE4_1_FLAG) ? 1 : 0;
 	cpuinfo.sse4_2 = (cpuid_data[2] & SSE4_2_FLAG) ? 1 : 0;
 	cpuinfo.popcnt = (cpuid_data[2] & POPCNT_FLAG) ? 1 : 0;
 	cpuinfo.avx = (cpuid_data[2] & AVX_FLAG) ? 1 : 0;
-
-#if defined ASMLIB_H
-	cpuid_ex((int *)cpuid_data, 7, 0);
-#elif defined(__GNUC__)
-	__get_cpuid(0x7, &cpuid_data[0], &cpuid_data[1], &cpuid_data[2], &cpuid_data[3]);
-#else
-	__cpuidex((int *)cpuid_data, 7, 0);
-#endif
-
 	cpuinfo.avx2 = (cpuid_data[1] & AVX2_FLAG) ? 1 : 0; // ebx
 }
