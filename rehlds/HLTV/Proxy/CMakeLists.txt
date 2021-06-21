@@ -6,13 +6,7 @@ option(DEBUG "Build with debug information." OFF)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Avoid -fPIC option
-set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
-
-set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
-set(LINK_FLAGS "-m32")
-
-set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-exceptions")
+set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-exceptions -fPIC")
 
 if (DEBUG)
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g3 -O3 -ggdb")
@@ -33,7 +27,7 @@ else()
 	# Produce code optimized for the most common IA32/AMD64/EM64T processors.
 	# As new processors are deployed in the marketplace, the behavior of this option will change.
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} \
-		-mtune=generic -msse3 -flto\
+		-mtune=generic -flto\
 		-fpermissive -fno-sized-deallocation\
 		-Wno-unused-result -Wno-unknown-pragmas -Wno-unused-variable\
 		-Wno-write-strings -Wno-strict-aliasing")
@@ -64,6 +58,10 @@ set(PROJECT_SRC_DIR
 
 set(PROJECT_BZIP2_DIR
 	"${PROJECT_SOURCE_DIR}/../../../dep/bzip2/include"
+)
+
+set(PROJECT_SSE2NEON_DIR
+	"${PROJECT_SOURCE_DIR}/../../../dep/sse2neon"
 )
 
 set(PROJECT_PUBLIC_DIR
@@ -112,6 +110,7 @@ add_library(proxy SHARED ${PROXY_SRCS})
 target_include_directories(proxy PRIVATE
 	${PROJECT_SRC_DIR}
 	${PROJECT_BZIP2_DIR}
+	${PROJECT_SSE2NEON_DIR}
 	${PROJECT_PUBLIC_DIR}
 )
 
@@ -136,7 +135,6 @@ target_link_libraries(proxy PRIVATE
 	dl
 	m
 	bzip2
-	steam_api
 )
 
 if (NOT TARGET bzip2)

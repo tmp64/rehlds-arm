@@ -289,7 +289,6 @@ public:
 	virtual void SetResourcesNum(int num);
 	virtual struct resource_s *GetResource(int index);
 	virtual void SetName(const char* name);
-	virtual ISteamGameServer *GetSteamGameServer();
 	virtual netadr_t *GetNetFrom();
 	virtual double GetOldTime();
 

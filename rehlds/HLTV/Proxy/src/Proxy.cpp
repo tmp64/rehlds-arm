@@ -1521,18 +1521,6 @@ bool Proxy::ProcessConnectionlessMessage(NetAddress *from, BitBuffer *stream)
 		return false;
 	}
 
-	if (SteamGameServer())
-	{
-		const int maxBuffer = 4096;
-		unsigned char data[maxBuffer];
-		int maxSize = Q_min(stream->m_MaxSize, maxBuffer);
-
-		Q_memcpy((char *)&data[4], stream->m_Data, maxSize);
-		*(uint32 *)data = CONNECTIONLESS_HEADER; // connectionless packet
-
-		SteamGameServer()->HandleIncomingPacket(data, maxSize + 4, ntohl(*(u_long *)&from->m_IP[0]), htons(from->m_Port));
-	}
-
 	char *c = cmdLine.GetToken(0);
 	if (c[0] == S2C_CHALLENGE)
 	{

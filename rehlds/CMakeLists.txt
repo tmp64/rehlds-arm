@@ -30,10 +30,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 
-set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
-set(LINK_FLAGS "-m32")
+#set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
+#set(LINK_FLAGS "-m32")
 
-set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-rtti -fno-exceptions")
+set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-rtti -fno-exceptions -fPIC")
 
 # Remove noxref code and data
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -ffunction-sections -fdata-sections")
@@ -64,7 +64,7 @@ else()
 	# Produce code optimized for the most common IA32/AMD64/EM64T processors.
 	# As new processors are deployed in the marketplace, the behavior of this option will change.
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} \
-		-mtune=generic -msse3\
+		-mtune=generic \
 		-fpermissive -fno-sized-deallocation\
 		-Wno-unknown-pragmas -Wno-invalid-offsetof\
 		-Wno-unused-variable -Wno-unused-result -Wno-unused-function -Wno-delete-non-virtual-dtor\
@@ -108,6 +108,10 @@ set(PROJECT_BZIP2_DIR
 
 set(PROJECT_CPPUNITLITE_DIR
 	"${PROJECT_SOURCE_DIR}/../dep/cppunitlite/include"
+)
+
+set(PROJECT_SSE2NEON_DIR
+	"${PROJECT_SOURCE_DIR}/../dep/sse2neon"
 )
 
 set(PROJECT_PUBLIC_DIR
@@ -237,6 +241,7 @@ add_dependencies(engine appversion)
 
 target_include_directories(engine PRIVATE
 	${PROJECT_SRC_DIR}
+	${PROJECT_SSE2NEON_DIR}
 	${PROJECT_BZIP2_DIR}
 	${PROJECT_CPPUNITLITE_DIR}
 	${PROJECT_PUBLIC_DIR}
@@ -279,9 +284,7 @@ target_link_libraries(engine PRIVATE
 	dl
 	rt
 	m
-	aelf32
 	bzip2
-	steam_api
 )
 
 if (USE_STATIC_LIBSTDC)

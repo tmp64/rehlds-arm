@@ -7,10 +7,10 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Avoid -fPIC option
-set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
+# set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
 
-set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
-set(LINK_FLAGS "-m32")
+set(COMPILE_FLAGS "-U_FORTIFY_SOURCE")
+set(LINK_FLAGS " ")
 
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-exceptions")
 
@@ -32,7 +32,7 @@ if ("$ENV{CXX}" MATCHES "icpc")
 else()
 	# Produce code optimized for the most common IA32/AMD64/EM64T processors.
 	# As new processors are deployed in the marketplace, the behavior of this option will change.
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -mtune=generic -msse3 -flto\
+	set(COMPILE_FLAGS "${COMPILE_FLAGS} -mtune=generic -flto\
 		-fpermissive -fno-sized-deallocation\
 		-Wno-unused-result -Wno-unknown-pragmas -Wno-unused-variable\
 		-Wno-sign-compare -Wno-write-strings -Wno-strict-aliasing")
@@ -60,6 +60,10 @@ set(PROJECT_SRC_DIR
 
 set(PROJECT_BZIP2_DIR
 	"${PROJECT_SOURCE_DIR}/../../../dep/bzip2/include"
+)
+
+set(PROJECT_SSE2NEON_DIR
+	"${PROJECT_SOURCE_DIR}/../../../dep/sse2neon"
 )
 
 set(PROJECT_PUBLIC_DIR
@@ -106,6 +110,7 @@ add_library(core SHARED ${CORE_SRCS})
 target_include_directories(core PRIVATE
 	${PROJECT_SRC_DIR}
 	${PROJECT_BZIP2_DIR}
+	${PROJECT_SSE2NEON_DIR}
 	${PROJECT_PUBLIC_DIR}
 )
 

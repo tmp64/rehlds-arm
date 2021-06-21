@@ -6,11 +6,8 @@ option(DEBUG "Build with debug information." OFF)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Avoid -fPIC option
-set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
-
-set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
-set(LINK_FLAGS "-m32")
+set(COMPILE_FLAGS "-U_FORTIFY_SOURCE -fPIC")
+set(LINK_FLAGS " ")
 
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-exceptions")
 
@@ -28,7 +25,7 @@ else()
 	# Produce code optimized for the most common IA32/AMD64/EM64T processors.
 	# As new processors are deployed in the marketplace, the behavior of this option will change.
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} \
-		-mtune=generic -msse3\
+		-mtune=generic \
 		-fpermissive -fno-sized-deallocation\
 		-Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-result -Wno-unused-function\
 		-Wno-write-strings -Wno-sign-compare -Wno-strict-aliasing")
@@ -61,6 +58,10 @@ set(PROJECT_SRC_DIR
 	"${PROJECT_SOURCE_DIR}/../.."
 )
 
+set(PROJECT_SSE2NEON_DIR
+	"${PROJECT_SOURCE_DIR}/../../../dep/sse2neon"
+)
+
 set(PROJECT_PUBLIC_DIR
 	"${PROJECT_SOURCE_DIR}/../../common"
 	"${PROJECT_SOURCE_DIR}/../../public"
@@ -80,6 +81,7 @@ add_library(filesystem_stdio SHARED ${FILESYSTEM_STDIO_SRCS})
 
 target_include_directories(filesystem_stdio PRIVATE
 	${PROJECT_SRC_DIR}
+	${PROJECT_SSE2NEON_DIR}
 	${PROJECT_PUBLIC_DIR}
 )
 

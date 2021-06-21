@@ -88,9 +88,7 @@
 #include <fstream>
 #include <iomanip>
 
-#include <smmintrin.h>
-#include <xmmintrin.h>
-
+#include "sse2neon.h"
 
 #ifdef _WIN32 // WINDOWS
 	// Define __func__ on VS less than 2015
@@ -136,8 +134,6 @@
 		VirtualFree(ptr, 0, MEM_RELEASE);
 	}
 #else // _WIN32
-	#include <x86intrin.h>
-
 	#ifndef PAGESIZE
 		#define PAGESIZE 4096
 	#endif
