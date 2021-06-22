@@ -15,7 +15,7 @@ set(LINK_FLAGS " ")
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-exceptions")
 
 if (DEBUG)
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g3 -O3 -ggdb")
+	set(COMPILE_FLAGS "${COMPILE_FLAGS} -ggdb")
 else()
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g0 -O3 -fno-stack-protector")
 endif()
@@ -116,6 +116,7 @@ target_sources(hlds PRIVATE
 
 target_link_libraries(hlds PRIVATE
 	dl
+	pthread
 )
 
 set_target_properties(hlds PROPERTIES

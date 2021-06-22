@@ -661,8 +661,8 @@ bool CDedicatedServerAPI::Init(const char *basedir, const char *cmdline, CreateI
 	eng->SetQuitting(IEngine::QUIT_NOTQUITTING);
 	registry->Init();
 
-	g_bIsDedicatedServer = TRUE;
-	TraceInit("FileSystem_Init(basedir, (void *)filesystemFactory)", "FileSystem_Shutdown()", 0);
+    g_bIsDedicatedServer = TRUE;
+    TraceInit("FileSystem_Init(basedir, (void *)filesystemFactory)", "FileSystem_Shutdown()", 0);
 	if (FileSystem_Init(basedir, (void *)filesystemFactory) && game->Init(0) && eng->Load(true, basedir, cmdline))
 	{
 		char text[256];

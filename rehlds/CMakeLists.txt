@@ -30,8 +30,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "")
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 
-#set(COMPILE_FLAGS "-m32 -U_FORTIFY_SOURCE")
-#set(LINK_FLAGS "-m32")
+if (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+	set(DEBUG 1)
+endif()
+
+set(COMPILE_FLAGS "-U_FORTIFY_SOURCE")
+set(LINK_FLAGS " ")
 
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-rtti -fno-exceptions -fPIC")
 
@@ -39,7 +43,8 @@ set(COMPILE_FLAGS "${COMPILE_FLAGS} -Wall -fno-rtti -fno-exceptions -fPIC")
 set(COMPILE_FLAGS "${COMPILE_FLAGS} -ffunction-sections -fdata-sections")
 
 if (DEBUG)
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g3 -O3 -ggdb")
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+	set(COMPILE_FLAGS "${COMPILE_FLAGS} -ggdb")
 else()
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} -g0 -O3 -fno-stack-protector")
 endif()
@@ -285,6 +290,8 @@ target_link_libraries(engine PRIVATE
 	rt
 	m
 	bzip2
+	steam_api
+	pthread
 )
 
 if (USE_STATIC_LIBSTDC)
@@ -297,7 +304,7 @@ set(LINK_FLAGS "${LINK_FLAGS} \
 	-L${PROJECT_SOURCE_DIR}/lib/linux32")
 
 set_target_properties(engine PROPERTIES
-	OUTPUT_NAME engine_i486
+	OUTPUT_NAME engine_aarch64
 	PREFIX ""
 	COMPILE_FLAGS ${COMPILE_FLAGS}
 	LINK_FLAGS ${LINK_FLAGS}

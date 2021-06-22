@@ -725,6 +725,8 @@ qboolean Master_IsLanGame(void)
 
 void Master_Heartbeat_f(void)
 {
+    //Steam_ForceHeartbeat in move?
+    CRehldsPlatformHolder::get()->SteamGameServer()->ForceHeartbeat();
 }
 
 void Host_ComputeFPS(double frametime)
@@ -1113,6 +1115,7 @@ int Host_Init(quakeparms_t *parms)
 
 	V_Init();
 	Chase_Init();
+
 	COM_Init(parms->basedir);
 	Host_ClearSaveDirectory();
 	HPAK_Init();

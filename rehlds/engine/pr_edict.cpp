@@ -184,8 +184,7 @@ char *ED_ParseEdict(char *data, edict_t *ent)
 
 	if (SuckOutClassname(data, ent))
 	{
-		className = (char *)(pr_strings + ent->v.classname);
-
+		className = com_token;
 		pEntityInit = GetEntityInit(className);
 		if (pEntityInit)
 		{
@@ -346,8 +345,8 @@ void ED_LoadFromFile(char *data)
 		else
 		{
 			ent = g_psv.edicts;
-			ReleaseEntityDLLFields(g_psv.edicts);	// TODO: May be better to call ED_ClearEdict here?
-			InitEntityDLLFields(ent);
+            ReleaseEntityDLLFields(g_psv.edicts);	// TODO: May be better to call ED_ClearEdict here?
+            InitEntityDLLFields(ent);
 		}
 
 		data = ED_ParseEdict(data, ent);

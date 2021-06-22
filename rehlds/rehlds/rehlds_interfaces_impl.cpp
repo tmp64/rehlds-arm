@@ -624,6 +624,10 @@ void EXT_FUNC CRehldsServerData::SetName(const char* name) {
 	g_psv.name[ARRAYSIZE(g_psv.name) - 1] = '\0';
 }
 
+ISteamGameServer* EXT_FUNC CRehldsServerData::GetSteamGameServer() {
+	return ::SteamGameServer();
+}
+
 uint32 EXT_FUNC CRehldsServerData::GetWorldmapCrc() {
 	return g_psv.worldmapCRC;
 }
