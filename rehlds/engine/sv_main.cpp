@@ -1822,7 +1822,7 @@ challenge_buf_t g_raw_challenge_buf;
 
 void SV_ChallengesInit()
 {
-#ifdef REHLDS_FIXES
+#if defined(REHLDS_FIXES) && defined(__i386__)
 	static_assert(sizeof(g_raw_challenge_buf) == 64u, "Invalid g_raw_challenge_buf size");
 	for (uint32_t& s : g_raw_challenge_buf.salt)
 	    __asm volatile("mrs %0, cntvct_el0" : "=r" (s));

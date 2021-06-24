@@ -69,7 +69,6 @@ else()
 	# Produce code optimized for the most common IA32/AMD64/EM64T processors.
 	# As new processors are deployed in the marketplace, the behavior of this option will change.
 	set(COMPILE_FLAGS "${COMPILE_FLAGS} \
-		-mtune=generic \
 		-fpermissive -fno-sized-deallocation\
 		-Wno-unknown-pragmas -Wno-invalid-offsetof\
 		-Wno-unused-variable -Wno-unused-result -Wno-unused-function -Wno-delete-non-virtual-dtor\
@@ -254,8 +253,8 @@ target_include_directories(engine PRIVATE
 
 target_compile_definitions(engine PRIVATE
 	SWDS
-	REHLDS_JIT
-	REHLDS_SSE
+	#REHLDS_JIT
+	#REHLDS_SSE
 	REHLDS_FIXES
 	REHLDS_CHECKS
 	REHLDS_API

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(rehlds CXX)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a -mfpu=neon -fdiagnostics-color=always")
+
 if (WIN32)
 	message(FATAL_ERROR "CMakeLists.txt Windows platform isn't supported yet. Use msvc/ReHLDS.sln instead it!")
 endif()

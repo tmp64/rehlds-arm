@@ -184,7 +184,7 @@ char *ED_ParseEdict(char *data, edict_t *ent)
 
 	if (SuckOutClassname(data, ent))
 	{
-		className = com_token;
+		className = (char *)(pr_strings + ent->v.classname);
 		pEntityInit = GetEntityInit(className);
 		if (pEntityInit)
 		{

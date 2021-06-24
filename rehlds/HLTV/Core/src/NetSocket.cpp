@@ -559,7 +559,7 @@ int NetSocket::SendLong(const char *pData, int len, int flags, const sockaddr *t
 
 	while (len > 0)
 	{
-		size = Q_min(SPLIT_SIZE, (long unsigned)len);
+		size = Q_min(SPLIT_SIZE, (int unsigned)len);
 		pPacket->packetID = (packetNumber << 4) + packetCount;
 		Q_memcpy(packet + sizeof(SPLITPACKET), pData + (packetNumber * SPLIT_SIZE), size);
 
